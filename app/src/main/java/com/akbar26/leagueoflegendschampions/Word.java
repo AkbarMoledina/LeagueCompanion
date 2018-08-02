@@ -1,4 +1,4 @@
-package com.akbar26.leaguecompanion;
+package com.akbar26.leagueoflegendschampions;
 
 /**
  * Created by akbar on 17/01/2018.
@@ -6,7 +6,7 @@ package com.akbar26.leaguecompanion;
 
 public class Word {
 
-    private String mChampionName;
+    String mChampionName;
 
     private String mChampionTitle;
 

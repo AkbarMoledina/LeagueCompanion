@@ -1,4 +1,4 @@
-package com.akbar26.leaguecompanion;
+package com.akbar26.leagueoflegendschampions;
 
 import org.junit.Test;
 

@@ -2,6 +2,7 @@ package com.akbar26.leaguecompanion;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,17 +17,28 @@ import android.widget.Toast;
 
 import com.akbar26.leaguecompanion.InfoList;
 
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
     public static TextView champions;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+//        FetchData process = new FetchData();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+//            process.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[])null);
+//        else
+//            process.execute((Void[])null);
+
+        new FetchData().execute();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
 //        champions = (TextView) findViewById(R.id.champions);
 
-        FetchData process = new FetchData();
-        process.execute();
+
+
 
         final ArrayList x = new ArrayList<Word>();
         x.add(new Word("Kassadin", "The Void Walker"));
@@ -41,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList a = new ArrayList<Word>();
         a = InfoList.getmKeyList();
+        JSONObject b = new JSONObject();
+        b = InfoList.getmChampionInfo();
 
         ListAdapter adapter = new ListAdapter(this, x);
         ListView listView = (ListView) findViewById(R.id.list);
