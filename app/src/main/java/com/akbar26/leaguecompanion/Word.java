@@ -1,4 +1,4 @@
-package com.akbar26.leagueoflegendschampions;
+package com.akbar26.leaguecompanion;
 
 /**
  * Created by akbar on 17/01/2018.

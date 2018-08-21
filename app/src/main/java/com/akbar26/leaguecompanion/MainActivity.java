@@ -12,11 +12,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import android.widget.Toast;
 
 import com.akbar26.leaguecompanion.InfoList;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,53 +26,55 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        FetchData process = new FetchData();
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-//            process.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[])null);
-//        else
-//            process.execute((Void[])null);
-
-        new FetchData().execute();
+        FetchData process = new FetchData();
+        process.doInBackground();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        champions = (TextView) findViewById(R.id.champions);
+        final ArrayList nameAndTitle = new ArrayList<Word>();
+        ArrayList keys;
+        keys = InfoList.getmKeyList();
+        JSONObject json;
+        json = InfoList.getmChampionInfo();
+        JSONObject championInfo;
+        String name;
+        String title;
 
+        Iterator keyIterator = keys.iterator();
+        while (keyIterator.hasNext()) {
+            try {
+                championInfo = json.getJSONObject((String) keyIterator.next());
+                name = (String) championInfo.get("name");
+                title = (String) championInfo.get("title");
+                nameAndTitle.add(new Word(name, title));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
+//        InfoList x = new InfoList();
+//        x.setmNameAndTitle(nameAndTitle);
 
-
-        final ArrayList x = new ArrayList<Word>();
-        x.add(new Word("Kassadin", "The Void Walker"));
-        x.add(new Word("Karthus", "The Deathsinger"));
-        x.add(new Word("Lee Sin", "The Blind Monk"));
-        x.add(new Word("Vladimir", "The Crimson Reaper"));
-        x.add(new Word("Sejuani", "The Winter's Wrath"));
-        x.add(new Word("Ekko", "The Boy Who Shattered Time"));
-        x.add(new Word("Karma", "The Enlightened One"));
-        x.add(new Word("Sivir", "The Battle Mistress"));
-        x.add(new Word("Kha'Zix", "The Voidreaver"));
-
-        ArrayList a = new ArrayList<Word>();
-        a = InfoList.getmKeyList();
-        JSONObject b = new JSONObject();
-        b = InfoList.getmChampionInfo();
-
-        ListAdapter adapter = new ListAdapter(this, x);
+        ListAdapter adapter = new ListAdapter(this, nameAndTitle);
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
         int y = 1;
 
         listView.setOnItemClickListener(
-            new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String championName = ((Word)x.get(position)).getmChampionName();
-                    Toast.makeText(MainActivity.this, championName, Toast.LENGTH_LONG).show();
-                    Intent championsIntent = new Intent(MainActivity.this, Champions.class);
-                    startActivity(championsIntent);
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        String championName = ((Word)nameAndTitle.get(position)).getmChampionName();
+                        InfoList x = new InfoList();
+                        x.setmPosition(position);
+                        InfoList y = new InfoList();
+                        y.setmNameAndTitle(nameAndTitle);
+                        Toast.makeText(MainActivity.this, championName, Toast.LENGTH_LONG).show();
+                        Intent championsIntent = new Intent(MainActivity.this, Champions.class);
+                        startActivity(championsIntent);
+                    }
                 }
-            }
         );
     }
 }

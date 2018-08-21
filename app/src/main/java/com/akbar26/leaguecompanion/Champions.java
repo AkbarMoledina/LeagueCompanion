@@ -1,7 +1,6 @@
-package com.akbar26.leagueoflegendschampions;
+package com.akbar26.leaguecompanion;
 
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 

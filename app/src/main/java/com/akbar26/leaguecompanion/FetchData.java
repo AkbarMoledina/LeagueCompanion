@@ -36,19 +36,18 @@ public class FetchData extends AsyncTask<Void, Void, List<String>> {
     @Override
     protected List<String> doInBackground(Void... params) {
         try {
-            Log.v("AsyncTask", "doInBackground");
-            String apikey = "RGAPI-7262478b-1212-43c5-8376-0fa831802caa";
+            String apikey = "RGAPI-8935165a-fe70-419e-8d3b-b006456207cc";
             URL url = new URL("https://euw1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&dataById=false&api_key=" + apikey);
-            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-            InputStream inputStream = httpURLConnection.getInputStream();
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            InputStream inputStream = connection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String json = bufferedReader.readLine();
             JSONObject joOuter = new JSONObject(json);
             jo = joOuter.getJSONObject("data");
 
-            Iterator keysToCopyIterator = jo.keys();
-            while (keysToCopyIterator.hasNext()) {
-                String keyValue = (String) keysToCopyIterator.next();
+            Iterator keyIterator = jo.keys();
+            while (keyIterator.hasNext()) {
+                String keyValue = (String) keyIterator.next();
                 keysList.add(keyValue);
             }
             Collections.sort(keysList);
